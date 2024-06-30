@@ -1,0 +1,101 @@
+REM > gray2
+REM generate all n-tuples
+REM Loopless reflected mixed-radix Gray generation.
+REM TAOCP 7.2.1.1 Algorithm H.
+DIM code 1024
+m=10
+j=9
+n=8
+base=7
+f=6
+o=5
+fj=4
+mj=3
+oj=2
+aj=1
+FOR pass = 1 TO 3 STEP 2
+P%=code
+[ OPT pass
+
+  STMFD R13!,{R14}
+
+.h1               ;initialize
+  ADR base,digits ; address of digits array
+  ADR f,focus     ; address of focus pointers
+  ADR o,direction
+  ADR m,radix     ; radix for each digit
+  MOV n,#4        ; number of digits
+  MOV j,n
+.h1loop
+  STRB j,[f,j]
+  MOV r1,#0
+  STRB r1,[base,j]
+  MOV r1,#1
+  STRB r1,[o,j]
+  SUBS j,j,#1
+  BPL h1loop
+
+.h2               ; visit
+  MOV r0,base
+  MOV r1,n
+  BL visit
+
+.h3               ; choose j
+  LDRB j,[f]      ; j <- f0
+  MOV r0,#0
+  STRB r0,[f]
+
+.h4               ; change coordinate j
+  CMP j,n
+  BEQ exit
+  LDRB aj,[base,j]
+  LDRB oj,[o,j]
+  ADD aj,aj,oj       ; aj <- aj + oj
+  STRB aj,[base,j]
+
+.h5
+  CMP aj,#0
+  BNE h2
+  LDRB mj,[m,j]
+  SUB mj,mj,#1
+  CMP aj,mj
+  BNE h2
+  MVN oj,oj
+  STRB oj,[o,j]
+  ADD r0,j,#1     ; j+1
+  LDRB fj,[f,r0]  ; f_j+1
+  STRB fj,[f,j]   ; f_j   <- f_j+1
+  STRB r0,[f,r0]  ; f_j+1 <- j + 1
+  B h2
+
+.exit
+  LDMFD R13!,{R14}
+  MOV PC,R14
+
+.visit            ; base address is in r0; length in r1
+  MOV r2,r0
+.vloop
+  LDRB r0,[r2,r1]
+  ADD r0,r0,#48
+  SWI "OS_WriteC"
+  SUBS r1,r1,#1
+  BPL vloop
+  SWI "OS_NewLine"
+  MOV PC,R14
+
+.digits
+  EQUD 0
+  EQUD 0
+.focus
+  EQUD 0
+  EQUD 0
+.direction
+  EQUD 0
+  EQUD 0
+.radix
+  EQUD &02020202
+  EQUD &02020202
+  ALIGN
+]
+NEXT pass
+CALL code

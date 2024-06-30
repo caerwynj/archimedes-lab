@@ -1,0 +1,72 @@
+REM;> Recaman
+REM RECAMAN sequence
+REM https://oeis.org/A005132
+
+buflen=64
+DIM buffer buflen
+DIM code 256
+DIM seen 100
+
+FOR pass = 0 TO 3 STEP 3
+P% = code
+[
+OPT pass
+
+MOV R4,#10  ; seq
+MOV R5,#0   ; i
+MOV R6,#0   ; last
+ADR R12,seen
+STMFD R13!, {R14}
+
+.loop
+SUBS R0,R6,R5   ; n = last - i
+BLE else
+BL getbit
+CMP R0,#1
+BNE else
+SUB R0,R6,R5
+B endif
+.else
+ADD R0,R6,R5
+.endif
+
+MOV R6,R0
+
+BL setbit
+
+BL print
+ADD R5,R5,#1
+SUBS R4,R4,#1
+BNE loop
+LDMFD R13!, {R14}
+MOV PC,R14
+
+.getbit   ; R0 input of n'th bit to get
+MOV R1,R0,ASR#3   ; n // 8
+AND R2,R0,#&7
+LDR R3,[R12,R1,LSL#2]
+MOV R0, #1
+MOV R0,R0,LSL R2
+AND R0,R3,R0
+MOV PC,R14
+
+.setbit   ; R0 input of n'th bit to set
+MOV R1,R0,ASR#3
+AND R2,R0,#&7
+LDR R3,[R12,R1,LSL#2]
+MOV R8,#1
+MOV R8,R8,LSL R2
+ORR R8,R3,R8
+STR R3,[R12,R1,LSL#2]
+MOV PC,R14
+
+.print
+ADR R1,buffer
+MOV R2,#buflen
+SWI "OS_ConvertSpacedInteger4"
+SWI "OS_Write0"
+SWI "OS_NewLine"
+MOV PC,R14
+]
+NEXT
+CALL(code)

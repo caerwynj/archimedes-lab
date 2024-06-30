@@ -1,0 +1,103 @@
+REM > B
+REM TAOCP Algorithm 7.2.1.6B
+REM Generate all binary tress with n nodes
+DIM code 1024
+n=12
+k=11
+lbase=10
+rbase=9
+j=8
+y=7
+
+FOR pass = 1 TO 3 STEP 2
+P%=code
+[ OPT pass
+
+  STMFD R13!,{R14}
+
+.b1                    ; initialize
+  ADR lbase,llinks
+  ADR rbase,rlinks
+  MOV n,#4
+  B exit
+.b1loop
+  MOV k,#1
+  ADD r0,k,#1
+  STRB r0,[lbase,k]
+  ADD k,k,#1
+  CMP k,n
+  BLT b1loop
+  ADD r0,n,#1
+  MOV r1,#1
+  STRB r1,[lbase,r0]
+
+.b2                   ; visit
+  MOV r0,lbase
+  MOV r1,n
+  BL visit
+  MOV r0,rbase
+  MOV r1,n
+  BL visit
+  B exit
+
+.b3                   ; Find j
+  MOV j,#1
+.b3loop
+  LDRB r0,[lbase,j]
+  TEQ r0,#0
+  BNE bend
+  STRB r0,[rbase,j]
+  ADD r1,j,#1
+  STRB r1,[lbase,j]
+  MOV j,r1
+  B b3loop
+.bend
+  CMP j,n
+  BGT exit
+
+.b4                   ; Find k and y
+  LDRB y,[lbase,j]
+  MOV k,#0
+.b4loop
+  LDRB r0,[rbase,y]
+  CMP r0,#0
+  MOVGT k,y
+  MOVGT y,r0
+  BGT b4loop
+
+.b5                  ; Promote y
+  MOV r0,#0
+  CMP k,r0
+  STRGTB r0,[rbase,k]
+  STRLEB r0,[lbase,j]
+  LDRB r0,[rbase,j]
+  STRB r0,[rbase,y]
+  STRB y,[rbase,j]
+  B b2
+
+
+.visit            ; base address is in r0; length in r1
+  MOV r2,r0
+.vloop
+  LDRB r0,[r2,r1]
+  ADD r0,r0,#48
+  SWI "OS_WriteC"
+  SUBS r1,r1,#1
+  BPL vloop
+  SWI "OS_NewLine"
+  MOV PC,R14
+
+.exit
+  LDMFD R13!, {R14}
+  MOV PC,R14
+
+.llinks
+  EQUD 0
+  EQUD 0
+.rlinks
+  EQUD 0
+  EQUD 0
+ALIGN
+]
+NEXT pass
+CALL code

@@ -1,0 +1,74 @@
+REM > gray1
+REM generate all n-tuples in gray binary code (loopless)
+REM TAOCP 7.2.1.1 Algorithm L.
+DIM code 256
+j=9
+n=8
+base=7
+f=6
+FOR pass = 0 TO 3 STEP 3
+P%=code
+[ OPT pass
+
+  STMFD R13!,{R14}
+
+.l1               ;initialize
+  ADR base,digits   ; address of digits array
+  ADR f,focus     ; address of focus pointers
+  MOV n,#4        ; number of digits
+  MOV r0,n
+.l1loop
+  STRB r0,[f,r0]
+  SUBS r0,r0,#1
+  BPL l1loop
+  MOV r0,f
+  MOV r1,n
+  BL visit
+
+.l2               ; visit
+  MOV r0,base
+  MOV r1,n
+  BL visit
+
+.l3               ; choose j
+  LDRB j,[f]      ; j <- f0
+  MOV r1,#0
+  STRB r1,[f]
+  CMP j,n
+  BEQ exit
+  ADD r0,j,#1     ; j+1
+  LDRB r1,[f,r0]  ; f_j+1
+  STRB r1,[f,j]   ; f_j   <- f_j+1
+  STRB r0,[f,r0]  ; f_j+1 <- j + 1
+
+.l4               ;complement coordinate j
+  LDRB r1,[base,j]
+  RSB r1,r1,#1
+  STRB r1,[base,j]
+  B l2
+
+.exit
+  LDMFD R13!,{R14}
+  MOV PC,R14
+
+.visit            ; base address is in r0; length in r1
+  MOV r2,r0
+.vloop
+  LDRB r0,[r2,r1]
+  ADD r0,r0,#48
+  SWI "OS_WriteC"
+  SUBS r1,r1,#1
+  BPL vloop
+  SWI "OS_NewLine"
+  MOV PC,R14
+
+.digits
+  EQUD &0
+  EQUD &0
+.focus
+  EQUD &0
+  EQUD &0
+  ALIGN
+]
+NEXT pass
+CALL code

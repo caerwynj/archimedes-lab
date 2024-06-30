@@ -1,0 +1,32 @@
+MODE 5
+VDU 19,1,1,0,0,0
+VDU 19,2,4,0,0,0
+VDU 19,3,3,0,0,0
+DIM X(10)
+DIM Y(10)
+FOR C=1 TO 2500
+ xorigin=RND(1200)
+ yorigin=RND(1000)
+VDU 29,xorigin;yorigin;
+radius=RND(300)+50
+sides=RND(8)+2
+MOVE radius,0
+MOVE 10,10
+GCOL 0,0
+FOR SIDE=1 TO sides
+angle=(SIDE-1)*2*PI/sides
+X(SIDE)=radius*COS(angle)
+Y(SIDE)=radius*SIN(angle)
+MOVE 0,0
+PLOT 85,X(SIDE),Y(SIDE)
+NEXT SIDE
+MOVE 0,0
+PLOT 85,radius,0
+GCOL 0,RND(3)
+FOR SIDE=1 TO sides
+FOR line=SIDE TO sides
+MOVE X(SIDE),Y(SIDE)
+DRAW X(line),Y(line)
+NEXT line
+NEXT SIDE
+NEXT C

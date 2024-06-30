@@ -1,0 +1,36 @@
+REM > M0472
+REM Natural numbers sequence
+REM https://oeis.org/A000027
+
+buflen=64
+DIM buffer buflen
+DIM code 256
+
+FOR pass = 0 TO 3 STEP 3
+P% = code
+[
+OPT pass
+
+MOV R4,#100
+MOV R5,#0
+STMFD R13!, {R14}
+
+.loop
+MOV R0,R5
+BL print
+ADD R5,R5,#1
+SUBS R4,R4,#1
+BNE loop
+LDMFD R13!, {R14}
+MOV PC,R14
+
+.print
+ADR R1,buffer
+MOV R2,#buflen
+SWI "OS_ConvertSpacedInteger4"
+SWI "OS_Write0"
+SWI "OS_NewLine"
+MOV PC,R14
+]
+NEXT
+CALL(code)

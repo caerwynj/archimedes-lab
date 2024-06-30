@@ -1,0 +1,54 @@
+REM > enum,ffb
+REM generate all n-tuples, mixed radix
+REM TAOCP 7.2.1.1 Algorithm M.
+DIM code 256
+FOR pass = 0 TO 3 STEP 3
+P%=code
+[
+        OPT pass
+        STMFD R13!,{R14}       ; push R14 onto stack
+        ADR R7,digits          ; address of digits array
+        ADR R6,radix           ; address of radix array
+        MOV R8,#4              ; n <- number of digits
+        MOV R12,#0
+
+        MOV R0,#2
+        STRB R0, [R6]          ; initialize m0 <- 2
+        SWI "OS_NewLine"
+
+.h2     BL visit               ; visit this permutation
+        MOV R3,R8              ; j <- n
+
+.h3     LDRB R0, [R7,R3]       ; $r_0 <- a_j$
+        LDRB R1, [R6,R3]       ; r1 <- mj
+        SUB R1,R1,#1           ; mj <- mj - 1
+        TEQ R0,R1              ; aj = mj -1 ?
+        STREQB R12, [R7,R3]
+        SUBEQ R3,R3,#1
+        BEQ h3
+
+        CMP R3,#0
+        BEQ exit
+        ADD R0,R0,#1
+        STRB R0, [R7,R3]
+        B h2
+
+.exit   LDMFD R13!,{R14}
+        MOV PC,R14
+
+.visit  MOV R3,R8
+.h1     LDRB R0,[R7,R3]
+        ADD R0,R0,#48
+        SWI "OS_WriteC"
+        SUBS R3,R3,#1
+        BPL h1
+        SWI "OS_NewLine"
+        MOV PC,R14
+
+.digits EQUD &00000000  
+        EQUD &00000000
+.radix  EQUD &03030303
+        EQUD &03030303
+]
+NEXT pass
+CALL code

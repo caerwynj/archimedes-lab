@@ -1,0 +1,25 @@
+REM > template
+DIM code 1024
+FOR pass = 0 TO 3 STEP 3
+P%=code
+[ OPT pass
+      MOV R0,#49
+      SWI "OS_WriteC"
+      SWI "OS_NewLine"
+      ADR R11,str
+      MOV r0,r11
+      swi "OS_Write0"
+      swi "OS_NewLine"
+.loop LDRB R0, [R11], #1
+      CMP R0,#0
+      SWINE "OS_WriteC"
+      BNE loop
+
+.exit
+      MOV PC,R14
+.str  EQUS "Hello, world"
+      EQUB 0
+      ALIGN
+]
+NEXT pass
+CALL code

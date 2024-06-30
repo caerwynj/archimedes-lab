@@ -1,0 +1,70 @@
+REM;> gray
+REM generate all n-tuples in gray binary code
+REM TAOCP 7.2.1.1 Algorithm G.
+DIM code 256
+j=9
+n=8
+base=7
+par=11
+FOR pass = 0 TO 3 STEP 3
+P%=code
+[OPT pass
+
+  STMFD R13!,{R14}
+
+.g1               ;initialize
+  ADR base,digits   ; address of digits array
+  MOV n,#6        ; number of digits
+  MOV par,#0      ; parity bit
+  MOV j,#0
+
+.g2               ; visit
+  BL visit
+
+.g3               ; change parity
+  RSBS par,par,#1 ; parity <- 1 - parity
+
+.g4               ; choose j
+  MOV j,#0
+  BNE g5          ; parity is 1
+.g4loop           ; find minimum j
+  ADD j,j,#1
+  SUB r0,j,#1
+  LDRB r1,[base,r0]
+  CMP r1,#1
+  BNE g4loop
+
+.g5               ;complement coordinate j
+  CMP j,n
+  BEQ exit
+  LDRB r1,[base,j]
+  RSB r1,r1,#1
+  STRB r1,[base,j]
+  B g2
+
+.exit
+  LDMFD R13!,{R14}
+  MOV PC,R14
+
+.visit
+  MOV R1,#0
+.vloop
+  LDRB R0,[R7,R1]
+  ADD R0,R0,#48
+  SWI "OS_WriteC"
+  ADD R1,R1,#1
+  CMP R1,R8
+  BLE vloop
+  SWI "OS_NewLine"
+  MOV PC,R14
+
+.digits
+EQUD &00000000
+EQUD &00000000
+.radix
+EQUD &03030303
+EQUD &03030303
+]
+NEXT pass
+
+CALL code

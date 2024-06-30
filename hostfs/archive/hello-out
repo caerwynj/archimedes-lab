@@ -1,0 +1,22 @@
+>LIST
+   10REM > testswi
+   20DIM code 256
+   30FOR pass = 0 TO 3 STEP 3
+   40P%=code
+   50[ OPT pass
+   60      MOV R0,#49
+   70      SWI "OS_WriteC"
+   80      SWI "OS_NewLine"
+   90      ADR R11,str
+  100.loop LDRB R0, [R11], #1
+  110      CMP R0,#0
+  120      SWINE "OS_WriteC"
+  130      BNE loop
+  140      MOV PC,R14
+  150.str  EQUS "Hello, world"
+  160      EQUB 0
+  170      ALIGN
+  180]
+  190NEXT pass
+  200CALL code
+>*spoolOn

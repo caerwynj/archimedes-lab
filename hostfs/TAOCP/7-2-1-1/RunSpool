@@ -1,0 +1,5 @@
+|delete enum-out1,fff
+spool out.enum-out1,fff
+run enum,fd1
+spool
+settype out.enum-out1,fff fff
