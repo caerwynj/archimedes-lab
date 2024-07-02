@@ -1,0 +1,26 @@
+---
+---
+
+@import "{{ site.theme }}";
+body {
+  font-family: "Computer Modern Serif", serif;
+  font-size: 12pt;
+}
+
+table {
+	border: none;
+        background-color: transparent;
+        tr {
+          background-color: transparent;
+        }
+	td {
+		border: none;
+		padding: 0px;
+	}
+}
+
+code {
+  background-color: transparent;
+  border:none;
+  font-family: "Computer Modern Typewriter";
+}
