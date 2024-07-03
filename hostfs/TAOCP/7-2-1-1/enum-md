@@ -1,35 +1,36 @@
-|*01*|`E92D4000`||`STMFD`|`R13!,{R14}`|Push link register onto stack.|
-|*02*|`E28F7070`||`ADR`|`R7,digits`|Address of digits array.|
-|*03*|`E28F6074`||`ADR`|`R6,radix`|Address of radix array.|
-|*04*|`E3A08004`||`MOV`|`R8,#4`|$$n \gets $$ number of digits.|
-|*05*|`E3A0C000`||`MOV`|`R12,#0`||
-|*06*|`E3A00002`||`MOV`|`R0,#2`||
-|*07*|`E5C60000`||`STRB`|`R0,[R6]`|Initialize $$m_0 \gets 2$$.|
-|*08*|`EB00000E`|`.h2`|`BL`|`visit`|Visit this permutation.|
-|*09*|`E1A03008`||`MOV`|`R3,R8`|$$j \gets n$$.|
-|*10*|`E7D70003`|`.h3`|`LDRB`|`R0,[R7,R3]`|Fetch $$a_j$$.|
-|*11*|`E7D61003`||`LDRB`|`R1,[R6,R3]`|Fetch $$m_j$$.|
-|*12*|`E2411001`||`SUB`|`R1,R1,#1`|$$m_j \gets m_j - 1$$.|
-|*13*|`E1300001`||`TEQ`|`R0,R1`|$$a_j = m_j - 1$$?|
-|*14*|`07C7C003`||`STREQB`|`R12,[R7,R3]`|$$a_j \gets 0$$.|
-|*15*|`02433001`||`SUBEQ`|`R3,R3,#1`|$$j \gets j - 1$$.|
-|*16*|`0AFFFFF8`||`BEQ`|`h3`||
-|*17*|`E3530000`||`CMP`|`R3,#0`|$$a_j = 0$$?|
-|*18*|`0A000002`||`BEQ`|`exit`|Then we're done.|
-|*19*|`E2800001`||`ADD`|`R0,R0,#1`|Otherwise $$a_j \gets a_j + 1$$|
-|*20*|`E7C70003`||`STRB`|`R0,[R7,R3]`||
-|*21*|`EAFFFFF1`||`B`|`h2`||
-|*22*|`E8BD4000`|`.exit`|`LDMFD`|`R13!,{R14}`|Pop link to caller from stack.|
-|*23*|`E1A0F00E`||`MOV`|`PC,R14`|Return to the caller.|
-|*24*|`E1A03008`|`.visit`|`MOV`|`R3,R8`||
-|*25*|`E7D70003`|`.h1`|`LDRB`|`R0,[R7,R3]`||
-|*26*|`E2800030`||`ADD`|`R0,R0,#48`||
-|*27*|`EF000000`||`SWI`|`"OS_WriteC"`|Print the permutation.|
-|*28*|`E2533001`||`SUBS`|`R3,R3,#1`||
-|*29*|`5AFFFFFA`||`BPL`|`h1`||
-|*30*|`EF000003`||`SWI`|`"OS_NewLine"`||
-|*31*|`E1A0F00E`||`MOV`|`PC,R14`||
-|*32*|`00000000`|`.digits`|`EQUD`|`&00000000`|Memory for storing digits.|
-|*33*|`00000000`||`EQUD`|`&00000000`||
-|*34*|`03030303`|`.radix`|`EQUD`|`&03030303`|Memory for radix.|
-|*35*|`03030303`||`EQUD`|`&03030303`||
+|*01*|`EA000003`||`B`|`start`||
+|*02*|`00000000`|`.digits`|`EQUD`|`&00000000`|*M1. Initialize.*|
+|*03*|`00000000`||`EQUD`|`&00000000`|Memory for storing digits.|
+|*04*|`03030303`|`.radix`|`EQUD`|`&03030303`|Memory for radix of each digit.|
+|*05*|`03030303`||`EQUD`|`&03030303`||
+|*06*|`E92D4000`|`.start`|`STMFD`|`R13!,{R14}`|Push link register onto stack.|
+|*07*|`E24F701C`||`ADR`|`R7,digits`|Address of digits array.|
+|*08*|`E24F6018`||`ADR`|`R6,radix`|Address of radix array.|
+|*09*|`E3A08004`||`MOV`|`R8,#4`|$$n \gets $$ number of digits.|
+|*10*|`E3A0C000`||`MOV`|`R12,#0`||
+|*11*|`E3A00002`||`MOV`|`R0,#2`||
+|*12*|`E5C60000`||`STRB`|`R0,[R6]`|Initialize $$m_0 \gets 2$$.|
+|*13*|`EB00000E`|`.h2`|`BL`|`visit`|*M2. Visit.*|
+|*14*|`E1A03008`||`MOV`|`R3,R8`|*M3. Prepare to add one.* $$j \gets n$$.|
+|*15*|`E7D70003`|`.h3`|`LDRB`|`R0,[R7,R3]`|*M4. Carry if necessary.* Fetch $$a_j$$.|
+|*16*|`E7D61003`||`LDRB`|`R1,[R6,R3]`|Fetch $$m_j$$.|
+|*17*|`E2411001`||`SUB`|`R1,R1,#1`||
+|*18*|`E1300001`||`TEQ`|`R0,R1`|$$a_j = m_j - 1$$?|
+|*19*|`07C7C003`||`STREQB`|`R12,[R7,R3]`|$$a_j \gets 0$$.|
+|*20*|`02433001`||`SUBEQ`|`R3,R3,#1`|$$j \gets j - 1$$.|
+|*21*|`0AFFFFF8`||`BEQ`|`h3`||
+|*22*|`E3530000`||`CMP`|`R3,#0`|$$a_j = 0$$?|
+|*23*|`0A000002`||`BEQ`|`exit`|Then we're done.|
+|*24*|`E2800001`||`ADD`|`R0,R0,#1`|Otherwise $$a_j \gets a_j + 1$$|
+|*25*|`E7C70003`||`STRB`|`R0,[R7,R3]`|*M5. Increase, unless done.*|
+|*26*|`EAFFFFF1`||`B`|`h2`||
+|*27*|`E8BD4000`|`.exit`|`LDMFD`|`R13!,{R14}`|Pop link to caller from stack.|
+|*28*|`E1A0F00E`||`MOV`|`PC,R14`|Return to the caller.|
+|*29*|`E1A03008`|`.visit`|`MOV`|`R3,R8`||
+|*30*|`E7D70003`|`.h1`|`LDRB`|`R0,[R7,R3]`||
+|*31*|`E2800030`||`ADD`|`R0,R0,#48`||
+|*32*|`EF000000`||`SWI`|`"OS_WriteC"`|Print the permutation.|
+|*33*|`E2533001`||`SUBS`|`R3,R3,#1`||
+|*34*|`5AFFFFFA`||`BPL`|`h1`||
+|*35*|`EF000003`||`SWI`|`"OS_NewLine"`||
+|*36*|`E1A0F00E`||`MOV`|`PC,R14`||

@@ -1,49 +1,51 @@
 Program renumbered
-000095F0          
-000095F0          
-000095F0                    OPT pass
-000095F0 E92D4000           STMFD R13!,{R14}       ; Push link register onto stack.
-000095F4 E28F7070           ADR R7,digits          ; Address of digits array.
-000095F8 E28F6074           ADR R6,radix           ; Address of radix array.
-000095FC E3A08004           MOV R8,#4              ; $$n \gets $$ number of digits.
-00009600 E3A0C000           MOV R12,#0
-00009604          
-00009604 E3A00002           MOV R0,#2
-00009608 E5C60000           STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
-0000960C          
-0000960C EB00000E .h2       BL visit               ; Visit this permutation.
-00009610 E1A03008           MOV R3,R8              ; $$j \gets n$$.
-00009614          
-00009614 E7D70003 .h3       LDRB R0,[R7,R3]        ; Fetch $$a_j$$.
-00009618 E7D61003           LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
-0000961C E2411001           SUB R1,R1,#1           ; $$m_j \gets m_j - 1$$.
-00009620 E1300001           TEQ R0,R1              ; $$a_j = m_j - 1$$?
-00009624 07C7C003           STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
-00009628 02433001           SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
-0000962C 0AFFFFF8           BEQ h3
-00009630          
-00009630 E3530000           CMP R3,#0              ; $$a_j = 0$$?
-00009634 0A000002           BEQ exit               ; Then we're done.
-00009638 E2800001           ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
-0000963C E7C70003           STRB R0,[R7,R3]
-00009640 EAFFFFF1           B h2
-00009644          
-00009644 E8BD4000 .exit     LDMFD R13!,{R14}       ; Pop link to caller from stack.
-00009648 E1A0F00E           MOV PC,R14             ; Return to the caller.
-0000964C          
-0000964C E1A03008 .visit    MOV R3,R8
-00009650 E7D70003 .h1       LDRB R0,[R7,R3]
-00009654 E2800030           ADD R0,R0,#48
-00009658 EF000000           SWI "OS_WriteC"        ; Print the permutation.
-0000965C E2533001           SUBS R3,R3,#1
-00009660 5AFFFFFA           BPL h1
-00009664 EF000003           SWI "OS_NewLine"
-00009668 E1A0F00E           MOV PC,R14
-0000966C          
-0000966C 00000000 .digits   EQUD &00000000        ; Memory for storing digits.
-00009670 00000000           EQUD &00000000
-00009674 03030303 .radix    EQUD &03030303        ; Memory for radix.
+00009668          
+00009668          
+00009668                    OPT pass
+00009668 EA000003           B start
+0000966C 00000000 .digits   EQUD &00000000        ; *M1. Initialize.*
+00009670 00000000           EQUD &00000000        ; Memory for storing digits.
+00009674 03030303 .radix    EQUD &03030303        ; Memory for radix of each digit.
 00009678 03030303           EQUD &03030303
+0000967C          
+0000967C E92D4000 .start    STMFD R13!,{R14}       ; Push link register onto stack.
+00009680 E24F701C           ADR R7,digits          ; Address of digits array.
+00009684 E24F6018           ADR R6,radix           ; Address of radix array.
+00009688 E3A08004           MOV R8,#4              ; $$n \gets $$ number of digits.
+0000968C E3A0C000           MOV R12,#0
+00009690          
+00009690 E3A00002           MOV R0,#2
+00009694 E5C60000           STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
+00009698          
+00009698 EB00000E .h2       BL visit               ; *M2. Visit.*
+0000969C E1A03008           MOV R3,R8              ; *M3. Prepare to add one.* $$j \gets n$$.
+000096A0          
+000096A0 E7D70003 .h3       LDRB R0,[R7,R3]        ; *M4. Carry if necessary.* Fetch $$a_j$$.
+000096A4 E7D61003           LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
+000096A8 E2411001           SUB R1,R1,#1           ;
+000096AC E1300001           TEQ R0,R1              ; $$a_j = m_j - 1$$?
+000096B0 07C7C003           STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
+000096B4 02433001           SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
+000096B8 0AFFFFF8           BEQ h3
+000096BC          
+000096BC E3530000           CMP R3,#0              ; $$a_j = 0$$?
+000096C0 0A000002           BEQ exit               ; Then we're done.
+000096C4 E2800001           ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
+000096C8 E7C70003           STRB R0,[R7,R3]        ; *M5. Increase, unless done.*
+000096CC EAFFFFF1           B h2
+000096D0          
+000096D0 E8BD4000 .exit     LDMFD R13!,{R14}       ; Pop link to caller from stack.
+000096D4 E1A0F00E           MOV PC,R14             ; Return to the caller.
+000096D8          
+000096D8 E1A03008 .visit    MOV R3,R8
+000096DC E7D70003 .h1       LDRB R0,[R7,R3]
+000096E0 E2800030           ADD R0,R0,#48
+000096E4 EF000000           SWI "OS_WriteC"        ; Print the permutation.
+000096E8 E2533001           SUBS R3,R3,#1
+000096EC 5AFFFFFA           BPL h1
+000096F0 EF000003           SWI "OS_NewLine"
+000096F4 E1A0F00E           MOV PC,R14
+000096F8          
 00000
 10000
 20000
