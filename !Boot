@@ -1,0 +1,4 @@
+| !Boot file for AcornDrive
+|
+Set AcornDrive$Dir <Obey$Dir>
+Iconsprites <AcornDrive$Dir>.!Sprites

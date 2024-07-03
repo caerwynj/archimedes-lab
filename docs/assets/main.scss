@@ -8,10 +8,14 @@ body {
 }
 
 table {
+        width: auto;
 	border: none;
         background-color: transparent;
         tr {
           background-color: transparent;
+          &:nth-child(even) {
+            background-color: transparent;
+          }
         }
 	td {
 		border: none;

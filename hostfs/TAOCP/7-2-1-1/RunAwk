@@ -1,0 +1,5 @@
+<Obey$Dir>.enum,fd1 { > <Obey$Dir>.enum-out }
+gawk -f <Obey$Dir>.fmt <Obey$Dir>.enum-out { > <Obey$Dir>.enum-md }
+
+settype <Obey$Dir>.enum-md fff
+

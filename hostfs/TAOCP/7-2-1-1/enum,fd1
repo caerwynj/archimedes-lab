@@ -6,48 +6,47 @@ FOR pass = 0 TO 3 STEP 3
 P%=code
 [
         OPT pass
-        STMFD R13!,{R14}       ; push R14 onto stack
-        ADR R7,digits          ; address of digits array
-        ADR R6,radix           ; address of radix array
-        MOV R8,#4              ; n <- number of digits
+        STMFD R13!,{R14}       ; Push link register onto stack.
+        ADR R7,digits          ; Address of digits array.
+        ADR R6,radix           ; Address of radix array.
+        MOV R8,#4              ; $$n \gets $$ number of digits.
         MOV R12,#0
 
         MOV R0,#2
-        STRB R0, [R6]          ; initialize m0 <- 2
-        SWI "OS_NewLine"
+        STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
 
-.h2     BL visit               ; visit this permutation
-        MOV R3,R8              ; j <- n
+.h2     BL visit               ; Visit this permutation.
+        MOV R3,R8              ; $$j \gets n$$.
 
-.h3     LDRB R0, [R7,R3]       ; $r_0 <- a_j$
-        LDRB R1, [R6,R3]       ; r1 <- mj
-        SUB R1,R1,#1           ; mj <- mj - 1
-        TEQ R0,R1              ; aj = mj -1 ?
-        STREQB R12, [R7,R3]
-        SUBEQ R3,R3,#1
+.h3     LDRB R0,[R7,R3]        ; Fetch $$a_j$$.
+        LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
+        SUB R1,R1,#1           ; $$m_j \gets m_j - 1$$.
+        TEQ R0,R1              ; $$a_j = m_j - 1$$?
+        STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
+        SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
         BEQ h3
 
-        CMP R3,#0
-        BEQ exit
-        ADD R0,R0,#1
-        STRB R0, [R7,R3]
+        CMP R3,#0              ; $$a_j = 0$$?
+        BEQ exit               ; Then we're done.
+        ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
+        STRB R0,[R7,R3]
         B h2
 
-.exit   LDMFD R13!,{R14}
-        MOV PC,R14
+.exit   LDMFD R13!,{R14}       ; Pop link to caller from stack.
+        MOV PC,R14             ; Return to the caller.
 
-.visit  MOV R3,R8
+.visit  MOV R3,R8              
 .h1     LDRB R0,[R7,R3]
         ADD R0,R0,#48
-        SWI "OS_WriteC"
+        SWI "OS_WriteC"        ; Print the permutation.
         SUBS R3,R3,#1
         BPL h1
         SWI "OS_NewLine"
         MOV PC,R14
 
-.digits EQUD &00000000  
+.digits EQUD &00000000        ; Memory for storing digits.
         EQUD &00000000
-.radix  EQUD &03030303
+.radix  EQUD &03030303        ; Memory for radix.
         EQUD &03030303
 ]
 NEXT pass

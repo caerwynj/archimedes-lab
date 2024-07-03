@@ -1,0 +1,128 @@
+Program renumbered
+000095F0          
+000095F0          
+000095F0                    OPT pass
+000095F0 E92D4000           STMFD R13!,{R14}       ; Push link register onto stack.
+000095F4 E28F7070           ADR R7,digits          ; Address of digits array.
+000095F8 E28F6074           ADR R6,radix           ; Address of radix array.
+000095FC E3A08004           MOV R8,#4              ; $$n \gets $$ number of digits.
+00009600 E3A0C000           MOV R12,#0
+00009604          
+00009604 E3A00002           MOV R0,#2
+00009608 E5C60000           STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
+0000960C          
+0000960C EB00000E .h2       BL visit               ; Visit this permutation.
+00009610 E1A03008           MOV R3,R8              ; $$j \gets n$$.
+00009614          
+00009614 E7D70003 .h3       LDRB R0,[R7,R3]        ; Fetch $$a_j$$.
+00009618 E7D61003           LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
+0000961C E2411001           SUB R1,R1,#1           ; $$m_j \gets m_j - 1$$.
+00009620 E1300001           TEQ R0,R1              ; $$a_j = m_j - 1$$?
+00009624 07C7C003           STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
+00009628 02433001           SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
+0000962C 0AFFFFF8           BEQ h3
+00009630          
+00009630 E3530000           CMP R3,#0              ; $$a_j = 0$$?
+00009634 0A000002           BEQ exit               ; Then we're done.
+00009638 E2800001           ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
+0000963C E7C70003           STRB R0,[R7,R3]
+00009640 EAFFFFF1           B h2
+00009644          
+00009644 E8BD4000 .exit     LDMFD R13!,{R14}       ; Pop link to caller from stack.
+00009648 E1A0F00E           MOV PC,R14             ; Return to the caller.
+0000964C          
+0000964C E1A03008 .visit    MOV R3,R8
+00009650 E7D70003 .h1       LDRB R0,[R7,R3]
+00009654 E2800030           ADD R0,R0,#48
+00009658 EF000000           SWI "OS_WriteC"        ; Print the permutation.
+0000965C E2533001           SUBS R3,R3,#1
+00009660 5AFFFFFA           BPL h1
+00009664 EF000003           SWI "OS_NewLine"
+00009668 E1A0F00E           MOV PC,R14
+0000966C          
+0000966C 00000000 .digits   EQUD &00000000        ; Memory for storing digits.
+00009670 00000000           EQUD &00000000
+00009674 03030303 .radix    EQUD &03030303        ; Memory for radix.
+00009678 03030303           EQUD &03030303
+00000
+10000
+20000
+01000
+11000
+21000
+02000
+12000
+22000
+00100
+10100
+20100
+01100
+11100
+21100
+02100
+12100
+22100
+00200
+10200
+20200
+01200
+11200
+21200
+02200
+12200
+22200
+00010
+10010
+20010
+01010
+11010
+21010
+02010
+12010
+22010
+00110
+10110
+20110
+01110
+11110
+21110
+02110
+12110
+22110
+00210
+10210
+20210
+01210
+11210
+21210
+02210
+12210
+22210
+00020
+10020
+20020
+01020
+11020
+21020
+02020
+12020
+22020
+00120
+10120
+20120
+01120
+11120
+21120
+02120
+12120
+22120
+00220
+10220
+20220
+01220
+11220
+21220
+02220
+12220
+22220
+
