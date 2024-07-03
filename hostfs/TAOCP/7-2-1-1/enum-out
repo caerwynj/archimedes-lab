@@ -1,130 +1,130 @@
 Program renumbered
-00009668          
-00009668          
-00009668                    OPT pass
-00009668 EA000003           B start
-0000966C 00000000 .digits   EQUD &00000000        ; *M1. Initialize.*
-00009670 00000000           EQUD &00000000        ; Memory for storing digits.
-00009674 03030303 .radix    EQUD &03030303        ; Memory for radix of each digit.
-00009678 03030303           EQUD &03030303
-0000967C          
-0000967C E92D4000 .start    STMFD R13!,{R14}       ; Push link register onto stack.
-00009680 E24F701C           ADR R7,digits          ; Address of digits array.
-00009684 E24F6018           ADR R6,radix           ; Address of radix array.
-00009688 E3A08004           MOV R8,#4              ; $$n \gets $$ number of digits.
-0000968C E3A0C000           MOV R12,#0
-00009690          
-00009690 E3A00002           MOV R0,#2
-00009694 E5C60000           STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
-00009698          
-00009698 EB00000E .h2       BL visit               ; *M2. Visit.*
-0000969C E1A03008           MOV R3,R8              ; *M3. Prepare to add one.* $$j \gets n$$.
-000096A0          
-000096A0 E7D70003 .h3       LDRB R0,[R7,R3]        ; *M4. Carry if necessary.* Fetch $$a_j$$.
-000096A4 E7D61003           LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
-000096A8 E2411001           SUB R1,R1,#1           ;
-000096AC E1300001           TEQ R0,R1              ; $$a_j = m_j - 1$$?
-000096B0 07C7C003           STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
-000096B4 02433001           SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
-000096B8 0AFFFFF8           BEQ h3
-000096BC          
-000096BC E3530000           CMP R3,#0              ; $$a_j = 0$$?
-000096C0 0A000002           BEQ exit               ; Then we're done.
-000096C4 E2800001           ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
-000096C8 E7C70003           STRB R0,[R7,R3]        ; *M5. Increase, unless done.*
-000096CC EAFFFFF1           B h2
-000096D0          
-000096D0 E8BD4000 .exit     LDMFD R13!,{R14}       ; Pop link to caller from stack.
-000096D4 E1A0F00E           MOV PC,R14             ; Return to the caller.
-000096D8          
-000096D8 E1A03008 .visit    MOV R3,R8
-000096DC E7D70003 .h1       LDRB R0,[R7,R3]
-000096E0 E2800030           ADD R0,R0,#48
-000096E4 EF000000           SWI "OS_WriteC"        ; Print the permutation.
-000096E8 E2533001           SUBS R3,R3,#1
-000096EC 5AFFFFFA           BPL h1
-000096F0 EF000003           SWI "OS_NewLine"
-000096F4 E1A0F00E           MOV PC,R14
-000096F8          
+00009678          
+00009678          
+00009678                    OPT pass
+00009678 EA000003           B start
+0000967C 00000000 .digits   EQUD &00000000        ; *M1. Initialize.*
+00009680 00000000           EQUD &00000000        ; Memory for storing digits.
+00009684 03030303 .radix    EQUD &03030303        ; Memory for radix of each digit.
+00009688 03030303           EQUD &03030303
+0000968C          
+0000968C E92D4000 .start    STMFD R13!,{R14}       ; Push link register onto stack.
+00009690 E24F701C           ADR R7,digits          ; Address of digits array.
+00009694 E24F6018           ADR R6,radix           ; Address of radix array.
+00009698 E3A08004           MOV R8,#4              ; $$n \gets $$ number of digits.
+0000969C E3A0C000           MOV R12,#0
+000096A0 E3A00002           MOV R0,#2              ; Initialize $$m_0 \gets 2$$.
+000096A4 E5C60000           STRB R0,[R6]
+000096A8          
+000096A8 EB00000E .h2       BL visit               ; *M2. Visit.*
+000096AC E1A03008           MOV R3,R8              ; *M3. Prepare to add one.* $$j \gets n$$.
+000096B0          
+000096B0 E7D70003 .h3       LDRB R0,[R7,R3]        ; *M4. Carry if necessary.* Fetch $$a_j$$.
+000096B4 E7D61003           LDRB R1,[R6,R3]        ; Fetch $$m_j$$.
+000096B8 E2411001           SUB R1,R1,#1           ;
+000096BC E1300001           TEQ R0,R1              ; $$a_j = m_j - 1$$?
+000096C0 07C7C003           STREQB R12,[R7,R3]     ; $$a_j \gets 0$$.
+000096C4 02433001           SUBEQ R3,R3,#1         ; $$j \gets j - 1$$.
+000096C8 0AFFFFF8           BEQ h3
+000096CC          
+000096CC E3530000           CMP R3,#0              ; $$a_j = 0$$?
+000096D0 0A000002           BEQ exit               ; Then we're done.
+000096D4 E2800001           ADD R0,R0,#1           ; Otherwise $$a_j \gets a_j + 1$$
+000096D8 E7C70003           STRB R0,[R7,R3]        ; *M5. Increase, unless done.*
+000096DC EAFFFFF1           B h2
+000096E0          
+000096E0 E8BD4000 .exit     LDMFD R13!,{R14}       ; Pop link to caller from stack.
+000096E4 E1A0F00E           MOV PC,R14             ; Return to the caller.
+000096E8          
+000096E8 E3A04000 .visit    MOV R4,#0
+000096EC E7D70004 .h1       LDRB R0,[R7,R4]
+000096F0 E2800030           ADD R0,R0,#48
+000096F4 EF000000           SWI "OS_WriteC"        ; Print the digit.
+000096F8 E2844001           ADD R4,R4,#1
+000096FC E1540008           CMP R4,R8
+00009700 DAFFFFF9           BLE h1
+00009704 EF000003           SWI "OS_NewLine"
+00009708 E1A0F00E           MOV PC,R14
+0000970C          
 00000
-10000
-20000
-01000
-11000
-21000
-02000
-12000
-22000
-00100
-10100
-20100
-01100
-11100
-21100
-02100
-12100
-22100
-00200
-10200
-20200
-01200
-11200
-21200
-02200
-12200
-22200
+00001
+00002
 00010
-10010
-20010
-01010
-11010
-21010
-02010
-12010
-22010
-00110
-10110
-20110
-01110
-11110
-21110
-02110
-12110
-22110
-00210
-10210
-20210
-01210
-11210
-21210
-02210
-12210
-22210
+00011
+00012
 00020
-10020
-20020
-01020
-11020
-21020
-02020
-12020
-22020
+00021
+00022
+00100
+00101
+00102
+00110
+00111
+00112
 00120
-10120
-20120
-01120
-11120
-21120
-02120
-12120
-22120
+00121
+00122
+00200
+00201
+00202
+00210
+00211
+00212
 00220
-10220
-20220
+00221
+00222
+01000
+01001
+01002
+01010
+01011
+01012
+01020
+01021
+01022
+01100
+01101
+01102
+01110
+01111
+01112
+01120
+01121
+01122
+01200
+01201
+01202
+01210
+01211
+01212
 01220
-11220
-21220
+01221
+01222
+02000
+02001
+02002
+02010
+02011
+02012
+02020
+02021
+02022
+02100
+02101
+02102
+02110
+02111
+02112
+02120
+02121
+02122
+02200
+02201
+02202
+02210
+02211
+02212
 02220
-12220
-22220
+02221
+02222
 

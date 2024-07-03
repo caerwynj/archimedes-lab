@@ -1,5 +1,5 @@
-<Obey$Dir>.enum,fd1 { > <Obey$Dir>.enum-out }
-gawk -f <Obey$Dir>.fmt <Obey$Dir>.enum-out { > <Obey$Dir>.enum-md }
+<Obey$Dir>.gray,fd1 { > <Obey$Dir>.run-out }
+gawk -f <Obey$Dir>.fmt <Obey$Dir>.run-out { > <Obey$Dir>.run-md }
 
-settype <Obey$Dir>.enum-md fff
+settype <Obey$Dir>.run-md fff
 

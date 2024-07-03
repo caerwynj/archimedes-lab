@@ -17,9 +17,8 @@ P%=code
         ADR R6,radix           ; Address of radix array.
         MOV R8,#4              ; $$n \gets $$ number of digits.
         MOV R12,#0
-
-        MOV R0,#2
-        STRB R0,[R6]           ; Initialize $$m_0 \gets 2$$.
+        MOV R0,#2              ; Initialize $$m_0 \gets 2$$.
+        STRB R0,[R6]           
 
 .h2     BL visit               ; *M2. Visit.* 
         MOV R3,R8              ; *M3. Prepare to add one.* $$j \gets n$$.
@@ -41,12 +40,13 @@ P%=code
 .exit   LDMFD R13!,{R14}       ; Pop link to caller from stack.
         MOV PC,R14             ; Return to the caller.
 
-.visit  MOV R3,R8              
-.h1     LDRB R0,[R7,R3]
+.visit  MOV R4,#0              
+.h1     LDRB R0,[R7,R4]
         ADD R0,R0,#48
-        SWI "OS_WriteC"        ; Print the permutation.
-        SUBS R3,R3,#1
-        BPL h1
+        SWI "OS_WriteC"        ; Print the digit.
+        ADD R4,R4,#1
+        CMP R4,R8
+        BLE h1
         SWI "OS_NewLine"
         MOV PC,R14
 
