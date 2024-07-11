@@ -8,67 +8,52 @@ base=7
 f=6
 FOR pass = 0 TO 3 STEP 3
 P%=code
-[ OPT pass
+[ 
+        OPT pass
+        B start
+.digits EQUD &0
+        EQUD &0
+.focus  EQUD &0
+        EQUD &0
+.start  STMFD R13!,{R14}        ; Initialize.
+        ADR base,digits         ; Address of digits array
+        ADR f,focus             ; Address of focus pointers
+        MOV n,#4                ; Number of digits
+        MOV R0,n
+.l1     STRB R0,[f,r0]
+        SUBS R0,R0,#1
+        BPL l1
 
-  STMFD R13!,{R14}
+.l2     MOV R0,base             ; Visit.
+        MOV R1,n
+        BL visit
 
-.l1               ;initialize
-  ADR base,digits   ; address of digits array
-  ADR f,focus     ; address of focus pointers
-  MOV n,#4        ; number of digits
-  MOV r0,n
-.l1loop
-  STRB r0,[f,r0]
-  SUBS r0,r0,#1
-  BPL l1loop
-  MOV r0,f
-  MOV r1,n
-  BL visit
+.l3     LDRB j,[f]              ; Choose $$j$$. $$j \gets f_0$$
+        MOV R1,#0
+        STRB R1,[f]
+        CMP j,n
+        BEQ exit
+        ADD R0,j,#1             ; $$j+1$$
+        LDRB R1,[f,R0]          ; $$f_j+1$$
+        STRB R1,[f,j]           ; $$f_j \gets f_j+1$$
+        STRB R0,[f,R0]          ; $$f_j+1 \gets j + 1$$
 
-.l2               ; visit
-  MOV r0,base
-  MOV r1,n
-  BL visit
+.l4     LDRB R1,[base,j]        ; Complement coordinate $$j$$
+        RSB R1,R1,#1
+        STRB R1,[base,j]
+        B l2
 
-.l3               ; choose j
-  LDRB j,[f]      ; j <- f0
-  MOV r1,#0
-  STRB r1,[f]
-  CMP j,n
-  BEQ exit
-  ADD r0,j,#1     ; j+1
-  LDRB r1,[f,r0]  ; f_j+1
-  STRB r1,[f,j]   ; f_j   <- f_j+1
-  STRB r0,[f,r0]  ; f_j+1 <- j + 1
+.exit   LDMFD R13!,{R14}
+        MOV PC,R14
 
-.l4               ;complement coordinate j
-  LDRB r1,[base,j]
-  RSB r1,r1,#1
-  STRB r1,[base,j]
-  B l2
-
-.exit
-  LDMFD R13!,{R14}
-  MOV PC,R14
-
-.visit            ; base address is in r0; length in r1
-  MOV r2,r0
-.vloop
-  LDRB r0,[r2,r1]
-  ADD r0,r0,#48
-  SWI "OS_WriteC"
-  SUBS r1,r1,#1
-  BPL vloop
-  SWI "OS_NewLine"
-  MOV PC,R14
-
-.digits
-  EQUD &0
-  EQUD &0
-.focus
-  EQUD &0
-  EQUD &0
-  ALIGN
+.visit  MOV R2,R0               ; Base address is in r0; length in r1.
+.v1     LDRB R0,[R2,R1]
+        ADD R0,R0,#48
+        SWI "OS_WriteC"
+        SUBS R1,R1,#1
+        BPL v1
+        SWI "OS_NewLine"
+        MOV PC,R14
 ]
 NEXT pass
 CALL code

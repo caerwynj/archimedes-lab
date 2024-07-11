@@ -20,6 +20,6 @@ BEGIN {line = 1}
         args = substr(instr, i+1)
         instr = substr(instr, 0, i-1)
              
-        printf "|*%02d*|`%s`|%s|`%s`|`%s`|%s|\n", line, mc, label, instr, args, comment
+        printf "|`%s`|*%02d*|%s|`%s`|`%s`|%s|\n", mc, line, label, instr, args, comment
         line += 1
 }

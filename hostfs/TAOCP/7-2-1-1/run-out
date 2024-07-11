@@ -1,109 +1,65 @@
 Program renumbered
-0000949C          
-0000949C          
-0000949C                    OPT pass
-0000949C EA000001           B start
-000094A0 00000000 .digits   EQUD &00000000
-000094A4 00000000           EQUD &00000000
-000094A8          
-000094A8 E92D4000 .start    STMFD R13!,{R14}        ; *G1. Initialize.*
-000094AC E24F7014           ADR R7,digits           ; Address of digits array
-000094B0 E3A08006           MOV R8,#6               ; Number of digits $$ n \gets 6$$
-000094B4 E3A0B000           MOV R11,#0              ; Parity bit
-000094B8 E3A09000           MOV R9,#0               ; $$ j \gets 0 $$
-000094BC          
-000094BC EB00000F .h2       BL visit                ; *G2. Visit.*
-000094C0          
-000094C0 E27BB001           RSBS R11,R11,#1         ; *G3. Change parity.*  $$ a_{\infty} \gets 1 - a_{\infty} $$
-000094C4 E3A09000           MOV R9,#0               ; *G4. Choose $$j$$.*
-000094C8 1A000004           BNE h5                  ; Parity is 1
-000094CC E2899001 .h3       ADD R9,R9,#1            ; Find minimum $$j$$
-000094D0 E2490001           SUB R0,R9,#1
-000094D4 E7D71000           LDRB R1,[R7,R0]
-000094D8 E3510001           CMP R1,#1
-000094DC 1AFFFFFA           BNE h3
-000094E0          
-000094E0 E1590008 .h5       CMP R9,R8               ; *G5. Complement coordinate $$j$$.*
-000094E4 0A000003           BEQ exit
-000094E8 E7D71009           LDRB R1,[R7,R9]
-000094EC E2611001           RSB R1,R1,#1
-000094F0 E7C71009           STRB R1,[R7,R9]
-000094F4 EAFFFFF0           B h2
-000094F8          
-000094F8 E8BD4000 .exit     LDMFD R13!,{R14}
-000094FC E1A0F00E           MOV PC,R14
-00009500          
-00009500 E3A01000 .visit    MOV R1,#0
-00009504 E7D70001 .h7       LDRB R0,[R7,R1]
-00009508 E2800030           ADD R0,R0,#48
-0000950C EF000000           SWI "OS_WriteC"
-00009510 E2811001           ADD R1,R1,#1
-00009514 E1510008           CMP R1,R8
-00009518 DAFFFFF9           BLE h7
-0000951C EF000003           SWI "OS_NewLine"
-00009520 E1A0F00E           MOV PC,R14
-0000000
-1000000
-1100000
-0100000
-0110000
-1110000
-1010000
-0010000
-0011000
-1011000
-1111000
-0111000
-0101000
-1101000
-1001000
-0001000
-0001100
-1001100
-1101100
-0101100
-0111100
-1111100
-1011100
-0011100
-0010100
-1010100
-1110100
-0110100
-0100100
-1100100
-1000100
-0000100
-0000110
-1000110
-1100110
-0100110
-0110110
-1110110
-1010110
-0010110
-0011110
-1011110
-1111110
-0111110
-0101110
-1101110
-1001110
-0001110
-0001010
-1001010
-1101010
-0101010
-0111010
-1111010
-1011010
-0011010
-0010010
-1010010
-1110010
-0110010
-0100010
-1100010
-1000010
-0000010
+00009510          
+00009510          
+00009510                    OPT pass
+00009510 EA000003           B start
+00009514 00000000 .digits   EQUD &0
+00009518 00000000           EQUD &0
+0000951C 00000000 .focus    EQUD &0
+00009520 00000000           EQUD &0
+00009524 E92D4000 .start    STMFD R13!,{R14}        ; Initialize.
+00009528 E24F701C           ADR base,digits         ; Address of digits array
+0000952C E24F6018           ADR f,focus             ; Address of focus pointers
+00009530 E3A08004           MOV n,#4                ; Number of digits
+00009534 E1A00008           MOV R0,n
+00009538 E7C60000 .l1       STRB R0,[f,r0]
+0000953C E2500001           SUBS R0,R0,#1
+00009540 5AFFFFFC           BPL l1
+00009544          
+00009544 E1A00007 .l2       MOV R0,base             ; Visit.
+00009548 E1A01008           MOV R1,n
+0000954C EB00000E           BL visit
+00009550          
+00009550 E5D69000 .l3       LDRB j,[f]              ; Choose $$j$$. $$j \gets f_0$$
+00009554 E3A01000           MOV R1,#0
+00009558 E5C61000           STRB R1,[f]
+0000955C E1590008           CMP j,n
+00009560 0A000007           BEQ exit
+00009564 E2890001           ADD R0,j,#1             ; $$j+1$$
+00009568 E7D61000           LDRB R1,[f,R0]          ; $$f_j+1$$
+0000956C E7C61009           STRB R1,[f,j]           ; $$f_j \gets f_j+1$$
+00009570 E7C60000           STRB R0,[f,R0]          ; $$f_j+1 \gets j + 1$$
+00009574          
+00009574 E7D71009 .l4       LDRB R1,[base,j]        ; Complement coordinate $$j$$
+00009578 E2611001           RSB R1,R1,#1
+0000957C E7C71009           STRB R1,[base,j]
+00009580 EAFFFFEF           B l2
+00009584          
+00009584 E8BD4000 .exit     LDMFD R13!,{R14}
+00009588 E1A0F00E           MOV PC,R14
+0000958C          
+0000958C E1A02000 .visit    MOV R2,R0               ; Base address is in r0; length in r1.
+00009590 E7D20001 .v1       LDRB R0,[R2,R1]
+00009594 E2800030           ADD R0,R0,#48
+00009598 EF000000           SWI "OS_WriteC"
+0000959C E2511001           SUBS R1,R1,#1
+000095A0 5AFFFFFA           BPL v1
+000095A4 EF000003           SWI "OS_NewLine"
+000095A8 E1A0F00E           MOV PC,R14
+00000
+00001
+00011
+00010
+00110
+00111
+00101
+00100
+01100
+01101
+01111
+01110
+01010
+01011
+01001
+01000
 

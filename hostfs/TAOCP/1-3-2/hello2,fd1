@@ -1,0 +1,23 @@
+REM > testswi
+DIM code 256
+FOR pass = 0 TO 3 STEP 3
+P%=code
+[ OPT pass
+      mov r0,#49
+      swi "OS_WriteC"
+      swi "OS_NewLine"
+      adr r11,str
+      mov r0,r11
+      swi "OS_Write0"
+      swi "OS_NewLine"
+.loop ldrb r0, [r11], #1
+      cmp r0,#0
+      swine "OS_WriteC"
+      bne loop
+      mov pc,r14
+.str  equs "Hello, world"
+      equb 0
+      ALIGN
+]
+NEXT pass
+CALL code
