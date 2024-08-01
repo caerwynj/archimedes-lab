@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="/archimedes-lab/assets/fonts.css"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gray binary generation 7.2.1.1G | Archimedes Programmers Notebook</title>
+<meta property="og:title" content="Gray binary generation 7.2.1.1G" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="__POST_DESC" />
+<meta property="og:description" content="__POST_DESC" />
+<link rel="canonical" href="/archimedes-lab/7/2/1/1/G.html" />
+<meta property="og:url" content="/archimedes-lab/7/2/1/1/G.html" />
+<meta property="og:site_name" content="Archimedes Programmers Notebook" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-07-02T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Gray binary generation 7.2.1.1G" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-07-02T00:00:00+00:00","datePublished":"2024-07-02T00:00:00+00:00","description":"__POST_DESC","headline":"__POST_DESC","mainEntityOfPage":{"@type":"WebPage","@id":"/archimedes-lab/7/2/1/1/G.html"},"url":"/archimedes-lab/7/2/1/1/G.html"}</script>
+<link rel="stylesheet" href="/archimedes-lab/assets/main.css">
+<link type="application/atom+xml" rel="alternate" href="/archimedes-lab/feed.xml" title="Archimedes Programmers Notebook" /></head>
+<script type="text/javascript" id="MathJax-script" async 
+	src="/archimedes-lab/assets/tex-mml-chtml.js">
+</script>
+<body>
+<header class="site-header" role="banner">
+  <div class="wrapper"><a class="site-title" rel="author" href="/archimedes-lab/">Archimedes Programmers Notebook</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/archimedes-lab/about/">About</a></div>
+      </nav></div>
+</header>
+
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Gray binary generation 7.2.1.1G</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-06-30T00:00:00+00:00" itemprop="datePublished">Jun 30, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+<p>__POST_DESC</p>
+<p><strong>Program G</strong>. r0 \(\equiv a_j\); r9 \(\equiv j\); r8 \(\equiv n\).</p>
+<table><tbody>
+  <tr>
+    <td><code>EA000001</code></td><td><em>01</em></td><td><code></code></td><td><code>B</code></td><td><code>start</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>00000000</code></td><td><em>02</em></td><td><code>.digits</code></td><td><code>EQUD</code></td><td><code>&00000000</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>00000000</code></td><td><em>03</em></td><td><code></code></td><td><code>EQUD</code></td><td><code>&00000000</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E92D4000</code></td><td><em>04</em></td><td><code>.start</code></td><td><code>STMFD</code></td><td><code>R13!,{R14}</code></td><td>G1. Initialize.</td>
+  </tr>
+  <tr>
+    <td><code>E24F7014</code></td><td><em>05</em></td><td><code></code></td><td><code>ADR</code></td><td><code>R7,digits</code></td><td>Address of digits array</td>
+  </tr>
+  <tr>
+    <td><code>E3A08006</code></td><td><em>06</em></td><td><code></code></td><td><code>MOV</code></td><td><code>R8,#6</code></td><td>Number of digits \( n \gets 6\)</td>
+  </tr>
+  <tr>
+    <td><code>E3A0B000</code></td><td><em>07</em></td><td><code></code></td><td><code>MOV</code></td><td><code>R11,#0</code></td><td>Parity bit</td>
+  </tr>
+  <tr>
+    <td><code>E3A09000</code></td><td><em>08</em></td><td><code></code></td><td><code>MOV</code></td><td><code>R9,#0</code></td><td>\( j \gets 0 \)</td>
+  </tr>
+  <tr>
+    <td><code>EB00000F</code></td><td><em>09</em></td><td><code>.h2</code></td><td><code>BL</code></td><td><code>visit</code></td><td>G2. Visit.</td>
+  </tr>
+  <tr>
+    <td><code>E27BB001</code></td><td><em>10</em></td><td><code></code></td><td><code>RSBS</code></td><td><code>R11,R11,#1</code></td><td>G3. Change parity.  \( a_{\infty} \gets 1 - a_{\infty} \)</td>
+  </tr>
+  <tr>
+    <td><code>E3A09000</code></td><td><em>11</em></td><td><code></code></td><td><code>MOV</code></td><td><code>R9,#0</code></td><td>G4. Choose \(j\).</td>
+  </tr>
+  <tr>
+    <td><code>1A000004</code></td><td><em>12</em></td><td><code></code></td><td><code>BNE</code></td><td><code>h5</code></td><td>Parity is 1</td>
+  </tr>
+  <tr>
+    <td><code>E2899001</code></td><td><em>13</em></td><td><code>.h3</code></td><td><code>ADD</code></td><td><code>R9,R9,#1</code></td><td>Find minimum \(j\)</td>
+  </tr>
+  <tr>
+    <td><code>E2490001</code></td><td><em>14</em></td><td><code></code></td><td><code>SUB</code></td><td><code>R0,R9,#1</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E7D71000</code></td><td><em>15</em></td><td><code></code></td><td><code>LDRB</code></td><td><code>R1,[R7,R0]</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E3510001</code></td><td><em>16</em></td><td><code></code></td><td><code>CMP</code></td><td><code>R1,#1</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>1AFFFFFA</code></td><td><em>17</em></td><td><code></code></td><td><code>BNE</code></td><td><code>h3</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E1590008</code></td><td><em>18</em></td><td><code>.h5</code></td><td><code>CMP</code></td><td><code>R9,R8</code></td><td>G5. Complement coordinate \(j\).</td>
+  </tr>
+  <tr>
+    <td><code>0A000003</code></td><td><em>19</em></td><td><code></code></td><td><code>BEQ</code></td><td><code>exit</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E7D71009</code></td><td><em>20</em></td><td><code></code></td><td><code>LDRB</code></td><td><code>R1,[R7,R9]</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E2611001</code></td><td><em>21</em></td><td><code></code></td><td><code>RSB</code></td><td><code>R1,R1,#1</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E7C71009</code></td><td><em>22</em></td><td><code></code></td><td><code>STRB</code></td><td><code>R1,[R7,R9]</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>EAFFFFF0</code></td><td><em>23</em></td><td><code></code></td><td><code>B</code></td><td><code>h2</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E8BD4000</code></td><td><em>24</em></td><td><code>.exit</code></td><td><code>LDMFD</code></td><td><code>R13!,{R14}</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E1A0F00E</code></td><td><em>25</em></td><td><code></code></td><td><code>MOV</code></td><td><code>PC,R14</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E3A01000</code></td><td><em>26</em></td><td><code>.visit</code></td><td><code>MOV</code></td><td><code>R1,#0</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E7D70001</code></td><td><em>27</em></td><td><code>.h7</code></td><td><code>LDRB</code></td><td><code>R0,[R7,R1]</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E2800030</code></td><td><em>28</em></td><td><code></code></td><td><code>ADD</code></td><td><code>R0,R0,#48</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>EF000000</code></td><td><em>29</em></td><td><code></code></td><td><code>SWI</code></td><td><code>"OS_WriteC"</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E2811001</code></td><td><em>30</em></td><td><code></code></td><td><code>ADD</code></td><td><code>R1,R1,#1</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E1510008</code></td><td><em>31</em></td><td><code></code></td><td><code>CMP</code></td><td><code>R1,R8</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>DAFFFFF9</code></td><td><em>32</em></td><td><code></code></td><td><code>BLE</code></td><td><code>h7</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>EF000003</code></td><td><em>33</em></td><td><code></code></td><td><code>SWI</code></td><td><code>"OS_NewLine"</code></td><td></td>
+  </tr>
+  <tr>
+    <td><code>E1A0F00E</code></td><td><em>34</em></td><td><code></code></td><td><code>MOV</code></td><td><code>PC,R14</code></td><td></td>
+  </tr>
+</tbody></table>
+
+  </div><a class="u-url" href="/archimedes-lab/7/2/1/1/G.html" hidden></a>
+</article>
+
+      </div>
+  
+</main>
+<footer class="site-footer h-card">
+  <data class="u-url" href="/archimedes-lab/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Archimedes Programmers Notebook</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Archimedes Programmers Notebook</li><li><a class="u-email" href="mailto:caerwynj@gmail.com">caerwynj@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/caerwynj"><svg class="svg-icon"><use xlink:href="/archimedes-lab/assets/minima-social-icons.svg#github"></use></svg> <span class="username">caerwynj</span></a></li><li><a href="https://www.twitter.com/caerwy"><svg class="svg-icon"><use xlink:href="/archimedes-lab/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">caerwy</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Experiments in the art of computer programming using Archimedes assembly language on the classic Acorn Archimedes computer, the first desktop RISC computer using the ARM2 processor. Algorithms are based upon The Art of Computer Programming.</p>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
