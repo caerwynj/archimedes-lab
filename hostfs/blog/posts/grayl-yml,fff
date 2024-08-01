@@ -1,0 +1,7 @@
+title: Gray binary generation 7.2.1.1L
+date: 2024-07-06
+chapter: 7.2.1.1
+algorithm: L
+url: /archimedes-lab/7/2/1/1/L.html
+description: Gray binary generation. Uses algorithm from TAOCP 7.2.1.1 Algorithm L.
+html: <p><strong>Program L</strong>. r9 \(\equiv j\); r8 \(\equiv n\); r7 \(\equiv\) base; r6 \(\equiv f\).</p>

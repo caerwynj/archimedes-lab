@@ -1,0 +1,19 @@
+The post bundle file gets split into meta and body and src listing.
+
+Metadata gets parsed by awk and turned into m4 macros.
+Then m4 turns a post into HTML.
+A post has meta, the main text, and the source code listing.
+
+The main text body is supposed to be markdown but there
+is issue with mixing in MathJax.
+
+The source code listing is run on arcem to 
+generate output listing from running the BBC Basic
+source.
+Then the output is run through awk to output an HTML table.
+
+I need to generate a URL from the post filename.
+Or a naming convention for posts.
+
+I'd like to combine the meta and post into one file.
+Bundle files with '---' as separator. 

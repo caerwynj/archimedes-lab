@@ -1,0 +1,69 @@
+ARM BBC BASIC V version 1.05 (C) Acorn 1989
+
+Starting with 651516 bytes free.
+
+Program renumbered
+00009514          
+00009514          
+00009514                    OPT pass
+00009514 EA000003           B start
+00009518 00000000 .digits   EQUD &0
+0000951C 00000000           EQUD &0
+00009520 00000000 .focus    EQUD &0
+00009524 00000000           EQUD &0
+00009528 E92D4000 .start    STMFD R13!,{R14}        ; Initialize.
+0000952C E24F701C           ADR base,digits         ; Address of digits array
+00009530 E24F6018           ADR f,focus             ; Address of focus pointers
+00009534 E3A08004           MOV n,#4                ; Number of digits
+00009538 E1A00008           MOV R0,n
+0000953C E7C60000 .l1       STRB R0,[f,r0]
+00009540 E2500001           SUBS R0,R0,#1
+00009544 5AFFFFFC           BPL l1
+00009548          
+00009548 E1A00007 .l2       MOV R0,base             ; Visit.
+0000954C E1A01008           MOV R1,n
+00009550 EB00000E           BL visit
+00009554          
+00009554 E5D69000 .l3       LDRB j,[f]              ; Choose \(j\). $$j \gets f_0$$
+00009558 E3A01000           MOV R1,#0
+0000955C E5C61000           STRB R1,[f]
+00009560 E1590008           CMP j,n
+00009564 0A000007           BEQ exit
+00009568 E2890001           ADD R0,j,#1             ; \(j+1\)
+0000956C E7D61000           LDRB R1,[f,R0]          ; \(f_j+1\)
+00009570 E7C61009           STRB R1,[f,j]           ; \(f_j \gets f_j+1\)
+00009574 E7C60000           STRB R0,[f,R0]          ; \(f_j+1 \gets j + 1\)
+00009578          
+00009578 E7D71009 .l4       LDRB R1,[base,j]        ; Complement coordinate \(j\)
+0000957C E2611001           RSB R1,R1,#1
+00009580 E7C71009           STRB R1,[base,j]
+00009584 EAFFFFEF           B l2
+00009588          
+00009588 E8BD4000 .exit     LDMFD R13!,{R14}
+0000958C E1A0F00E           MOV PC,R14
+00009590          
+00009590 E1A02000 .visit    MOV R2,R0               ; Base address is in r0; length in r1.
+00009594 E7D20001 .v1       LDRB R0,[R2,R1]
+00009598 E2800030           ADD R0,R0,#48
+0000959C EF000000           SWI "OS_WriteC"
+000095A0 E2511001           SUBS R1,R1,#1
+000095A4 5AFFFFFA           BPL v1
+000095A8 EF000003           SWI "OS_NewLine"
+000095AC E1A0F00E           MOV PC,R14
+00000
+00001
+00011
+00010
+00110
+00111
+00101
+00100
+01100
+01101
+01111
+01110
+01010
+01011
+01001
+01000
+

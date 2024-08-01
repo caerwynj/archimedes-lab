@@ -1,0 +1,7 @@
+title: Enumeration of all tuples 7.2.1.1M
+date: 2024-06-30
+chapter: 7.2.1.1
+algorithm: M
+url: /archimedes-lab/7/2/1/1/M.html
+description: Generate all n-tuples. Uses algorithm from TAOCP 7.2.1.1 Algorithm M.
+html: <p><strong>Program M</strong>. r0 \(\equiv a_j\); r1 \(\equiv m_j\); r3 \(\equiv j\); r8 \(\equiv n\).</p>

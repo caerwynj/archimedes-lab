@@ -1,0 +1,5 @@
+dir <Obey$Dir>
+basic enum-src { > enum-out }
+basic gray-src { > gray-out }
+basic grayl-src { > grayl-out }
+
